@@ -81,9 +81,9 @@ public:
   * @param drawable The object to be drawn.
   * @param states Optional render states to apply during drawing. Defaults to sf::RenderStates::Default.
   */
-  void 
-  draw(const sf:: Drawable& drawable, 
-      const sf:: RenderStates& states = sf::RenderStates::Default);
+void 
+draw(const sf:: Drawable& drawable, 
+    const sf:: RenderStates& states = sf::RenderStates::Default);
 
   /**
   * @brief Displays the contents of the window.
@@ -92,8 +92,8 @@ public:
   * previously drawn objects visible on the screen. It is typically
   * called at the end of each frame.
   */
-  void
-  display();
+void
+display();
 
   /**
   * @brief Destroys the window and releases its resources.
@@ -102,8 +102,8 @@ public:
   * It should be called when the window is no longer needed to ensure
   * proper resource management.
   */
-  void
-  destroy();
+void
+destroy();
 private:
   /**
   * @brief Pointer to the SFML RenderWindow instance.

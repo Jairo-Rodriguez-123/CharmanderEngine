@@ -34,44 +34,51 @@ public:
   * @brief Updates the shape's state.  
   * @param deltaTime The time elapsed since the last update.  
   */  
- void update(float deltaTime);  
+ void 
+   update(float deltaTime);  
 
  /**  
   * @brief Renders the shape on the specified window.  
   * @param window The window where the shape will be rendered.  
   */  
- void render(Window& window);  
+ void 
+   render(Window& window);  
 
  /**  
   * @brief Sets the position of the shape.  
   * @param x The x-coordinate of the position.  
   * @param y The y-coordinate of the position.  
   */  
- void setPosition(float x, float y);  
+void 
+setPosition(float x, float y);  
 
  /**  
   * @brief Sets the position of the shape using a vector.  
   * @param position The position vector.  
   */  
- void setPosition(const sf::Vector2f& position);  
+void 
+setPosition(const sf::Vector2f& position);  
 
  /**  
   * @brief Sets the fill color of the shape.  
   * @param color The fill color to apply.  
   */  
- void setFillColor(const sf::Color& color);  
+void 
+setFillColor(const sf::Color& color);  
 
  /**  
   * @brief Sets the rotation angle of the shape.  
   * @param angle The rotation angle in degrees.  
   */  
- void setRotation(float angle);  
+void 
+setRotation(float angle);  
 
  /**  
   * @brief Sets the scale of the shape.  
   * @param scl The scale vector to apply.  
   */  
- void setScale(const sf::Vector2f& scl);  
+void 
+setScale(const sf::Vector2f& scl);  
 
  /**  
   * @brief Retrieves the shape object.  
