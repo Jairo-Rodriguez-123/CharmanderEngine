@@ -1,36 +1,68 @@
-#pragma once
-#include "Prerequisites.h"
-#include "Window.h"
+#pragma once  
+#include "Prerequisites.h"  
+#include "Window.h"  
 
-class 
-BaseApp {
-public:
-	BaseApp() = default ;
-	~BaseApp();
+/**  
+* @class BaseApp  
+* @brief Represents the base application class responsible for managing the main application lifecycle.  
+*/  
+class BaseApp {  
+public:  
+   /**  
+    * @brief Default constructor for BaseApp.  
+    */  
+    BaseApp() = default;  
 
-	//Funcion encargada de ejecutar la aplicacion en main
-	int
-		run();
+   /**  
+    * @brief Destructor for BaseApp.  
+    */  
+    ~BaseApp();  
 
-	//Funcion de inicializacion
-	bool
-	init();
+   /**  
+    * @brief Executes the application.  
+    *  
+    * This function is intended to be called from the main function to start the application.  
+    * @return int Exit code of the application.  
+    */  
+    int run();  
 
-	//funcion que se actualiza por frame
-	void
-	update();
+   /**  
+    * @brief Initializes the application.  
+    *  
+    * This function sets up all necessary resources and configurations for the application.  
+    * @return bool True if initialization is successful, false otherwise.  
+    */  
+    bool init();  
 
-	//Funcion de renderizado
-	void
-	render();
-	
-	void
-	destroy();
-	
+   /**  
+    * @brief Updates the application state.  
+    *  
+    * This function is called once per frame to update the application logic.  
+    */  
+    void update();  
 
-private:
-	Window* m_window;
-	//sf::RenderWindow* m_window;
-	sf::CircleShape*  m_circle;
+   /**  
+    * @brief Renders the application.  
+    *  
+    * This function is responsible for drawing all graphical elements on the screen.  
+    */  
+    void render();  
+
+   /**  
+    * @brief Destroys the application.  
+    *  
+    * This function releases all resources and performs cleanup operations.  
+    */  
+    void destroy();  
+
+private:  
+   /**  
+    * @brief Pointer to the main application window.  
+    */  
+    Window* m_window;  
+
+   /**  
+    * @brief Pointer to a circle shape used for rendering.  
+    */  
+    sf::CircleShape* m_circle;  
 };
-
