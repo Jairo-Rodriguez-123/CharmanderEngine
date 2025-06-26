@@ -1,48 +1,56 @@
 #pragma once
 #include "Prerequisites.h"
+
 /**
 * @class Window
-* @brief Represents a graphical window for rendering and event handling.
+* @brief Encapsulates an SFML RenderWindow for rendering and window management.
+* The Window class provides a high-level interface for creating and managing a graphical window
+* using the SFML library. It supports window creation, event handling, drawing operations, and
+* resource management. The class is designed to be used as the main rendering target in a graphical
+* application, handling all window-related operations internally.
 *
-* The Window class provides an interface for creating and managing a graphical
-* window using the SFML library. It supports rendering, event handling, and
-* resource management.
+* Example usage:
+* @code
+* Window window(800, 600, "My Application");
+* while (window.isOpen()) {
+*   window.handleEvents();
+*   window.clear();
+*   // Draw your objects here
+*   window.display();
+* }
+* @endcode
 */
 class
   Window {
 public:
   /**
   * @brief Default constructor for the Window class.
-  *
-  * This constructor initializes a Window object with default values.
+  * Constructs a Window object without initializing the underlying window.
+  * The window must be initialized using the parameterized constructor before use.
   */
   Window() = default;
 
   /**
-  * @brief Parameterized constructor for the Window class.
+  * @brief Constructs a Window with the specified dimensions and title.
+  * Initializes the window with the given width, height, and title.
+  * Allocates the underlying SFML RenderWindow and prepares it for rendering.
   *
-  * This constructor creates a Window object with the specified width, height, and title.
-  *
-  * @param width The width of the window in pixels.
+  * @param width  The width of the window in pixels.
   * @param height The height of the window in pixels.
-  * @param title The title of the window as a string.
+  * @param title  The title of the window displayed in the title bar.
   */
   Window(int width, int height, const std::string& title);
 
   /**
   * @brief Destructor for the Window class.
-  *
-  * This destructor ensures that all resources associated with the Window object
-  * are properly released when the object is destroyed.
+  * Releases all resources associated with the window and destroys the underlying SFML RenderWindow.
   */
   ~Window();
 
   /**
-  * @brief Handles all the events for the window.
-  *
-  * This method processes input events such as keyboard, mouse, and window events.
-  * It ensures that the application responds appropriately to user interactions
-  * and system messages.
+  * @brief Handles window events such as input and window close requests.
+  * This function processes all pending events for the window, such as keyboard and mouse input,
+  * window resizing, and close events. It should be called once per frame in the main loop.
   */
   void
     handleEvents();
@@ -50,76 +58,59 @@ public:
   /**
   * @brief Checks if the window is currently open.
   *
-  * This method returns a boolean value indicating whether the window
-  * is still open and operational. It is useful for determining if the
-  * application should continue running or terminate.
-  *
-  * @return true if the window is open, false otherwise.
+  * @return true if the window is open; false if it has been closed.
   */
   bool
     isOpen() const;
 
   /**
-  * @brief Clears the window with a specified color.
+  * @brief Clears the window with the specified color.
+  * This function fills the entire window with the given color, preparing it for new drawing operations.
+  * It should be called at the beginning of each frame before any draw calls.
   *
-  * This method fills the entire window with the given color, effectively
-  * resetting its contents. It is typically called at the beginning of
-  * each frame before drawing new objects.
-  *
-  * @param color The color to clear the window with. Defaults to black.
+  * @param color The color to use when clearing the window (default is opaque black).
   */
   void
     clear(const sf::Color& color = sf::Color(0, 0, 0, 255));
 
   /**
-  * @brief Draws a drawable object onto the window.
+  * @brief Draws a drawable object to the window.
+  * This function renders the specified drawable object (such as shapes, sprites, or text)
+  * onto the window using the provided render states. The draw call is queued and will be
+  * displayed after calling the display() method.
   *
-  * This method renders a drawable object, such as a sprite or shape,
-  * onto the window. It can also accept custom render states for advanced
-  * rendering configurations.
-  *
-  * @param drawable The object to be drawn.
-  * @param states Optional render states to apply during drawing. Defaults to sf::RenderStates::Default.
+  * @param drawable The drawable object to render (e.g., sf::Sprite, sf::Shape, sf::Text).
+  * @param states   The render states to use for drawing (default is sf::RenderStates::Default).
   */
   void
     draw(const sf::Drawable& drawable,
       const sf::RenderStates& states = sf::RenderStates::Default);
 
   /**
-  * @brief Displays the contents of the window.
-  *
-  * This method swaps the back buffer to the front, making all the
-  * previously drawn objects visible on the screen. It is typically
-  * called at the end of each frame.
+  * @brief Displays the contents of the window on the screen.
+  * This function swaps the back buffer with the front buffer, making everything
+  * that has been drawn since the last call to display() visible on the window.
+  * It should be called once per frame, after all draw calls.
   */
   void
     display();
 
   /**
-  * @brief Destroys the window and releases its resources.
-  *
-  * This method closes the window and cleans up any associated resources.
-  * It should be called when the window is no longer needed to ensure
-  * proper resource management.
+  * @brief Destroys the window and releases associated resources.
+  * This function closes the window and frees any resources allocated for it.
+  * After calling destroy(), the window is no longer usable until re-initialized.
   */
   void
     destroy();
+
 private:
   /**
-  * @brief Pointer to the SFML RenderWindow instance.
-  *
-  * This member variable holds a pointer to the SFML RenderWindow object,
-  * which represents the main window where all rendering operations occur.
-  * It is used to manage the window's lifecycle and rendering context.
+  * @brief Pointer to the underlying SFML RenderWindow.
+  * This member holds a pointer to the SFML sf::RenderWindow instance used for rendering
+  * and window management. It is managed internally by the Window class and should not
+  * be accessed directly by users of the class.
   */
   //sf::RenderWindow* m_window;
   EngineUtilities::TUniquePtr<sf::RenderWindow> m_windowPtr;
-  /**
-  * @brief The current view of the window.
-  * 
-  * This member variable stores the SFML View object, which defines the
-  * visible region of the window. It can be used to control the camera
-  * position, zoom level, and other view-related properties.
-  */
   sf::View m_view;
 };

@@ -1,53 +1,69 @@
-#include "BaseApp.h"
+#include <BaseApp.h>
 
 BaseApp::~BaseApp() {
 }
 
-int 
+int
 BaseApp::run() {
   if (!init()) {
-    ERROR("BaseApp", 
-          "run",
-          "Initializes result on false statemente, check method validations");
+    ERROR("BaseApp",
+      "run",
+      "Initializes result on a false statement, check method validations");
   }
-
-  init();
-
-  while (m_window->isOpen()) {
-      m_window->handleEvents();
-      update();
-      render();
+  while (m_windowPtr->isOpen()) {
+    m_windowPtr->handleEvents();
+    update();
+    render();
   }
-
   destroy();
   return 0;
 }
 
-bool 
-BaseApp::init()
-{
-    m_window = new Window(1920, 1080, "Labrid Engine"); 
-    m_circle = new sf::CircleShape(100.0f);
-    m_circle->setFillColor(sf::Color::Green);
-    m_circle->setPosition(200.f, 150.f);
+bool
+BaseApp::init() {
+  m_windowPtr = EngineUtilities::MakeShared<Window>(1920, 1080, "Graphos");
+  if (!m_windowPtr) {
+    ERROR("BaseApp",
+      "init",
+      "Failed to create window pointer, check memory allocation");
+    return false;
+  }
+  //m_window = new Window(1920, 1080, "Graphos");
+  //m_circle = new sf::CircleShape(100.0f);
+  //m_circle->setFillColor(sf::Color::Green);
+  //m_circle->setPosition(200.f, 150.f);
+  m_shapePtr = EngineUtilities::MakeShared<Shape>();
+  if (m_shapePtr) {
+    m_shapePtr->createShape(ShapeType::CIRCLE);
+    m_shapePtr->setFillColor(sf::Color::Green);
+    m_shapePtr->setPosition(200.f, 150.f);
+  }
   return true;
 }
 
-void 
+void
 BaseApp::update() {
 }
 
-void 
+void
 BaseApp::render() {
-    m_window->clear();
-    m_window->draw(*m_circle);
-    m_window->display();
+  // Limpiar, dibujar y mostrar
+  //m_windowPtr->clear();
+  //m_windowPtr->draw(*m_circle);
+  //m_windowPtr->display();
+
+  if (!m_windowPtr) {
+    return;
+  }
+  m_windowPtr->clear();
+  if (m_shapePtr) {
+    m_shapePtr->render(m_windowPtr);
+  }
+  m_windowPtr->display();
 }
 
-void 
+void
 BaseApp::destroy() {
-    m_window->destroy();
-    delete m_circle;
+  //delete m_circle;
+  //m_window->destroy();
 }
-
-
