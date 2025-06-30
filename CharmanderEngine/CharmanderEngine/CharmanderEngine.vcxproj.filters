@@ -74,5 +74,8 @@
     <ClInclude Include="include\ECS\transform.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utilities\Cvector2.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
