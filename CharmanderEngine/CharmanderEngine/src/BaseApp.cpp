@@ -28,6 +28,7 @@ BaseApp::init() {
       "Failed to create window pointer, check memory allocation");
     return false;
   }
+
   //m_window = new Window(1920, 1080, "Graphos");
   //m_circle = new sf::CircleShape(100.0f);
   //m_circle->setFillColor(sf::Color::Green);
