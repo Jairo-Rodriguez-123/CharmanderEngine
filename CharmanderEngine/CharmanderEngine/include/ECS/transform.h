@@ -7,7 +7,11 @@ class Window;
 class
   Transform : public Component {
 public:
-  Transform() = default;
+  Transform() = position(0.0f, 0.0f),
+                rotation(0.0f, 0.0f),
+                scale(1.0f, 1.0f),
+                Component(ComponentType::Transform) {}
+}
 
   virtual
     ~Transform() = default;
@@ -23,7 +27,25 @@ public:
     render(const EngineUtilities::TSharedPointer<Window>& window) override;
 
   void
-    destroy() override;
+    destroy() {}
+
+  void
+  seek(const sf::Vector2f& targetPosition,
+       float speed,
+       float deltaTime,
+       float range) {
+    sf::Vector2f direction = targetPosition - m_position;
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    if (length > range) {
+      direction /= length; // Normalize the direction vector
+      m_position += direction * speed * deltaTime; // Move towards the target
+    }
+  }
+
+
+
+
 
   // Getters
   void

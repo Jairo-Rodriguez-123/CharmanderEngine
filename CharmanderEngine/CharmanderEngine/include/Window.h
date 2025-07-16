@@ -84,7 +84,7 @@ public:
   */
   void
     draw(const sf::Drawable& drawable,
-      const sf::RenderStates& states = sf::RenderStates::Default);
+         const sf::RenderStates& states = sf::RenderStates::Default);
 
   /**
   * @brief Displays the contents of the window on the screen.
@@ -95,14 +95,16 @@ public:
   void
     display();
 
+  void
+  update();
+
   /**
   * @brief Destroys the window and releases associated resources.
   * This function closes the window and frees any resources allocated for it.
   * After calling destroy(), the window is no longer usable until re-initialized.
   */
   void
-    destroy();
-
+  destroy();
 private:
   /**
   * @brief Pointer to the underlying SFML RenderWindow.
@@ -110,7 +112,11 @@ private:
   * and window management. It is managed internally by the Window class and should not
   * be accessed directly by users of the class.
   */
-  //sf::RenderWindow* m_window;
+
   EngineUtilities::TUniquePtr<sf::RenderWindow> m_windowPtr;
+  sf::View m_view;
+public:
+  sf::Time m_deltaTime;
+  sf::Clock m_clock;
   sf::View m_view;
 };
