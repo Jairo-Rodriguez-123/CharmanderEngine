@@ -23,6 +23,7 @@
     <ClCompile Include="src\CShape.cpp" />
     <ClCompile Include="src\ECS\Actor.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,12 +32,14 @@
     <ClInclude Include="include\ECS\Actor.h" />
     <ClInclude Include="include\ECS\Component.h" />
     <ClInclude Include="include\ECS\Entity.h" />
+    <ClInclude Include="include\ECS\Texture.h" />
     <ClInclude Include="include\ECS\transform.h" />
     <ClInclude Include="include\Memory\TSharedPointer.h" />
     <ClInclude Include="include\Memory\TStaticPtr.h" />
     <ClInclude Include="include\Memory\TUniquePtr.h" />
     <ClInclude Include="include\Memory\TWeakPointer.h" />
     <ClInclude Include="include\Prerequisites.h" />
+    <ClInclude Include="include\ResourceManager.h" />
     <ClInclude Include="include\Utilities\Cvector2.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>
