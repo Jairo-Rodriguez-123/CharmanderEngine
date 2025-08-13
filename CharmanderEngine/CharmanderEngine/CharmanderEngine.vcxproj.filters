@@ -19,6 +19,18 @@
     <Filter Include="ECS">
       <UniqueIdentifier>{b0555460-c28c-4ab4-86ae-c8d0be327b4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{fa38d982-5e17-4606-b14a-b5424e0fe79d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Textures">
+      <UniqueIdentifier>{c5e24e41-bd0c-4b61-ab41-66d6d06e572a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Textures\Tracks">
+      <UniqueIdentifier>{d687a1a9-7ed2-4ebf-8bf3-a71889b83415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Textures\Characters">
+      <UniqueIdentifier>{f35b6397-a7c4-4df4-9457-99fd248cfc20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -86,5 +98,16 @@
     <ClInclude Include="include\ECS\Texture.h">
       <Filter>ECS</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Tracks - Mario Circuit 3.png">
+      <Filter>Assets\Textures\Tracks</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Racers - Koopa Troopa.png">
+      <Filter>Assets\Textures\Characters</Filter>
+    </Image>
+    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Racers - Toad.png">
+      <Filter>Assets\Textures\Characters</Filter>
+    </Image>
   </ItemGroup>
 </Project>

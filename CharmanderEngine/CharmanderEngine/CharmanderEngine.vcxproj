@@ -43,6 +43,11 @@
     <ClInclude Include="include\Utilities\Cvector2.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Racers - Koopa Troopa.png" />
+    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Racers - Toad.png" />
+    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Tracks - Mario Circuit 3.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
