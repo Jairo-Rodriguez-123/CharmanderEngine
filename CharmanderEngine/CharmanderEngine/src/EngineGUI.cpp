@@ -1,402 +1,439 @@
-#include "EngineGUI.h"
+ï»¿#include "EngineGUI.h"
 #include "Window.h"
-#include "ECS/Actor.h"
-#include "ECS/Transform.h"
-#include <filesystem>
-#include "ActorSerializer.h" // Para guardar/cargar actores
-
-namespace fs = std::filesystem;
+#include "ECS\Actor.h"
 
 void
 EngineGUI::init(const EngineUtilities::TSharedPointer<Window>& window) {
-  ImGui::SFML::Init(*window->m_windowPtr);
-  SetupVektorCoreGUIStyle();
-  selectedActorIndex = -1;
+	// Initalize the ImGui Resource
+	ImGui::SFML::Init(*window->m_windowPtr);
+  setupDarkGUIStyle();
+	selectedActorIndex = 0;
 }
 
-void
-EngineGUI::update(const EngineUtilities::TSharedPointer<Window>& window,
-  sf::Time deltaTime) {
-  ImGui::SFML::Update(*window->m_windowPtr, deltaTime);
+void 
+EngineGUI::update(const EngineUtilities::TSharedPointer<Window>& window, 
+									sf::Time deltaTime) {
+	ImGui::SFML::Update(*window->m_windowPtr, deltaTime);
+	barMenu();
 }
 
 void
 EngineGUI::render(const EngineUtilities::TSharedPointer<Window>& window) {
-  ImGui::SFML::Render(*window->m_windowPtr);
+	ImGui::SFML::Render(*window->m_windowPtr);
 }
 
-void
-EngineGUI::destroy() {
-  ImGui::SFML::Shutdown();
-}
-
-void
+void 
 EngineGUI::processEvent(const sf::Window& window, const sf::Event& event) {
-  ImGui::SFML::ProcessEvent(window, event);
+	ImGui::SFML::ProcessEvent(window, event);
 }
 
-void
-EngineGUI::SetupVektorCoreGUIStyle() {
+void 
+EngineGUI::setupDarkGUIStyle() {
   ImGuiStyle& style = ImGui::GetStyle();
 
-  // Bordes y elementos redondeados sutilmente
-  style.WindowRounding = 4.0f;
-  style.FrameRounding = 4.0f;
-  style.GrabRounding = 4.0f;
-  style.ScrollbarRounding = 4.0f;
-  style.TabRounding = 3.0f;
-  style.WindowBorderSize = 1.5f;
-  style.FrameBorderSize = 1.0f;
-  style.WindowPadding = ImVec2(10, 10);
-  style.FramePadding = ImVec2(8, 4);
-  style.ItemSpacing = ImVec2(8, 6);
-  style.ItemInnerSpacing = ImVec2(6, 4);
+  style.Alpha = 1.0f;
+  style.DisabledAlpha = 1.0f;
+  style.WindowPadding = ImVec2(12.0f, 12.0f);
+  style.WindowRounding = 0.0f;
+  style.WindowBorderSize = 0.0f;
+  style.WindowMinSize = ImVec2(20.0f, 20.0f);
+  style.WindowTitleAlign = ImVec2(0.5f, 0.5f);
+  style.WindowMenuButtonPosition = ImGuiDir_None;
+  style.ChildRounding = 0.0f;
+  style.ChildBorderSize = 1.0f;
+  style.PopupRounding = 0.0f;
+  style.PopupBorderSize = 1.0f;
+  style.FramePadding = ImVec2(6.0f, 6.0f);
+  style.FrameRounding = 0.0f;
+  style.FrameBorderSize = 0.0f;
+  style.ItemSpacing = ImVec2(12.0f, 6.0f);
+  style.ItemInnerSpacing = ImVec2(6.0f, 3.0f);
+  style.CellPadding = ImVec2(12.0f, 6.0f);
+  style.IndentSpacing = 20.0f;
+  style.ColumnsMinSpacing = 6.0f;
+  style.ScrollbarSize = 12.0f;
+  style.ScrollbarRounding = 0.0f;
+  style.GrabMinSize = 12.0f;
+  style.GrabRounding = 0.0f;
+  style.TabRounding = 0.0f;
+  style.TabBorderSize = 0.0f;
+  style.ColorButtonPosition = ImGuiDir_Right;
+  style.ButtonTextAlign = ImVec2(0.5f, 0.5f);
+  style.SelectableTextAlign = ImVec2(0.0f, 0.0f);
 
-  ImVec4* colors = style.Colors;
-  // Negro absoluto para el fondo
-  colors[ImGuiCol_WindowBg] = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
-  colors[ImGuiCol_ChildBg] = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
-  colors[ImGuiCol_PopupBg] = ImVec4(0.04f, 0.0f, 0.09f, 1.00f);
-  colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.85f);
-
-  // Texto blanco total
-  colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
-  colors[ImGuiCol_TextDisabled] = ImVec4(0.5f, 0.1f, 0.7f, 0.6f); // Morado apagado
-
-  // MORADO NEÓN para todo lo interactivo (bordes, líneas, botones, tabs)
-  ImVec4 neon = ImVec4(0.89f, 0.08f, 1.00f, 1.00f); // Fuchsia brillante
-
-  colors[ImGuiCol_Border] = neon;
-  colors[ImGuiCol_BorderShadow] = ImVec4(0.2f, 0.0f, 0.3f, 0.7f);
-  colors[ImGuiCol_FrameBg] = ImVec4(0.08f, 0.00f, 0.13f, 1.00f);
-  colors[ImGuiCol_FrameBgHovered] = neon;
-  colors[ImGuiCol_FrameBgActive] = neon;
-  colors[ImGuiCol_TitleBg] = ImVec4(0.13f, 0.0f, 0.2f, 1.00f);
-  colors[ImGuiCol_TitleBgActive] = neon;
-  colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.05f, 0.0f, 0.12f, 1.00f);
-  colors[ImGuiCol_MenuBarBg] = ImVec4(0.04f, 0.0f, 0.07f, 1.00f);
-  colors[ImGuiCol_ScrollbarBg] = ImVec4(0.12f, 0.0f, 0.15f, 1.00f);
-  colors[ImGuiCol_ScrollbarGrab] = neon;
-  colors[ImGuiCol_ScrollbarGrabHovered] = neon;
-  colors[ImGuiCol_ScrollbarGrabActive] = neon;
-  colors[ImGuiCol_CheckMark] = neon;
-  colors[ImGuiCol_SliderGrab] = neon;
-  colors[ImGuiCol_SliderGrabActive] = neon;
-  colors[ImGuiCol_Button] = ImVec4(0.18f, 0.0f, 0.25f, 1.00f);
-  colors[ImGuiCol_ButtonHovered] = neon;
-  colors[ImGuiCol_ButtonActive] = neon;
-  colors[ImGuiCol_Header] = ImVec4(0.20f, 0.0f, 0.25f, 1.00f);
-  colors[ImGuiCol_HeaderHovered] = neon;
-  colors[ImGuiCol_HeaderActive] = neon;
-  colors[ImGuiCol_Separator] = neon;
-  colors[ImGuiCol_SeparatorHovered] = neon;
-  colors[ImGuiCol_SeparatorActive] = neon;
-  colors[ImGuiCol_ResizeGrip] = neon;
-  colors[ImGuiCol_ResizeGripHovered] = neon;
-  colors[ImGuiCol_ResizeGripActive] = neon;
-  colors[ImGuiCol_Tab] = ImVec4(0.14f, 0.0f, 0.19f, 1.00f);
-  colors[ImGuiCol_TabHovered] = neon;
-  colors[ImGuiCol_TabActive] = neon;
-  colors[ImGuiCol_TabUnfocused] = ImVec4(0.13f, 0.0f, 0.16f, 1.00f);
-  colors[ImGuiCol_TabUnfocusedActive] = neon;
-  colors[ImGuiCol_PlotLines] = neon;
-  colors[ImGuiCol_PlotLinesHovered] = neon;
-  colors[ImGuiCol_PlotHistogram] = neon;
-  colors[ImGuiCol_PlotHistogramHovered] = neon;
-  colors[ImGuiCol_TextSelectedBg] = neon;
-  colors[ImGuiCol_DragDropTarget] = neon;
-  colors[ImGuiCol_NavHighlight] = neon;
-  colors[ImGuiCol_NavWindowingHighlight] = neon;
-  colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.40f);
-
-  // Extra: Si quieres que hasta los child-windows, combos y popups sean neón
-  colors[ImGuiCol_ChildBg] = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-  colors[ImGuiCol_PopupBg] = ImVec4(0.08f, 0.0f, 0.12f, 0.98f);
+  style.Colors[ImGuiCol_Text] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+  style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.2745098173618317f, 0.3176470696926117f, 0.4509803950786591f, 1.0f);
+  style.Colors[ImGuiCol_WindowBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+  style.Colors[ImGuiCol_ChildBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+  style.Colors[ImGuiCol_PopupBg] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+  style.Colors[ImGuiCol_Border] = ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
+  style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+  style.Colors[ImGuiCol_FrameBg] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
+  style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
+  style.Colors[ImGuiCol_TitleBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+  style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+  style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+  style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
+  style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+  style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.1568627506494522f, 0.168627455830574f, 0.1921568661928177f, 1.0f);
+  style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_CheckMark] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+  style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+  style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.5372549295425415f, 0.5529412031173706f, 1.0f, 1.0f);
+  style.Colors[ImGuiCol_Button] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
+  style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
+  style.Colors[ImGuiCol_Header] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
+  style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
+  style.Colors[ImGuiCol_Separator] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
+  style.Colors[ImGuiCol_SeparatorHovered] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
+  style.Colors[ImGuiCol_SeparatorActive] = ImVec4(0.1568627506494522f, 0.1843137294054031f, 0.250980406999588f, 1.0f);
+  style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 1.0f);
+  style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
+  style.Colors[ImGuiCol_Tab] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+  style.Colors[ImGuiCol_TabHovered] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_TabActive] = ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
+  style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+  style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.0784313753247261f, 0.08627451211214066f, 0.1019607856869698f, 1.0f);
+  style.Colors[ImGuiCol_PlotLines] = ImVec4(0.5215686559677124f, 0.6000000238418579f, 0.7019608020782471f, 1.0f);
+  style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.03921568766236305f, 0.9803921580314636f, 0.9803921580314636f, 1.0f);
+  style.Colors[ImGuiCol_PlotHistogram] = ImVec4(1.0f, 0.2901960909366608f, 0.5960784554481506f, 1.0f);
+  style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.9960784316062927f, 0.4745098054409027f, 0.6980392336845398f, 1.0f);
+  style.Colors[ImGuiCol_TableHeaderBg] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+  style.Colors[ImGuiCol_TableBorderStrong] = ImVec4(0.0470588244497776f, 0.05490196123719215f, 0.07058823853731155f, 1.0f);
+  style.Colors[ImGuiCol_TableBorderLight] = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
+  style.Colors[ImGuiCol_TableRowBg] = ImVec4(0.1176470592617989f, 0.1333333402872086f, 0.1490196138620377f, 1.0f);
+  style.Colors[ImGuiCol_TableRowBgAlt] = ImVec4(0.09803921729326248f, 0.105882354080677f, 0.1215686276555061f, 1.0f);
+  style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.2352941185235977f, 0.2156862765550613f, 0.5960784554481506f, 1.0f);
+  style.Colors[ImGuiCol_DragDropTarget] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+  style.Colors[ImGuiCol_NavHighlight] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+  style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.4980392158031464f, 0.5137255191802979f, 1.0f, 1.0f);
+  style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
+  style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.196078434586525f, 0.1764705926179886f, 0.5450980663299561f, 0.501960813999176f);
 }
 
+void 
+EngineGUI::barMenu() {
+	if (ImGui::BeginMainMenuBar()) {
 
-// ---- BAR MENU tipo Unity ----
-void
-EngineGUI::menuBar()
-{
-  if (ImGui::BeginMainMenuBar())
-  {
-    /* ====================  FILE  ==================== */
-    if (ImGui::BeginMenu("File"))
-    {
-      if (ImGui::MenuItem("New Scene", "Ctrl+N")) {/* TODO */ }
-      if (ImGui::MenuItem("Open Scene...", "Ctrl+O")) {/* TODO */ }
-      if (ImGui::MenuItem("Save Scene", "Ctrl+S")) {/* TODO */ }
-      if (ImGui::MenuItem("Save Scene As…")) {/* TODO */ }
-      ImGui::Separator();
+		// Menï¿½ Archivo
+		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("New")) {
+				// Acciï¿½n para nuevo archivo
+			}
+			if (ImGui::MenuItem("Open", "Ctrl+O")) {
+				// Acciï¿½n para abrir archivo
+			}
+			if (ImGui::MenuItem("Save", "Ctrl+S")) {
+				// Acciï¿½n para guardar archivo
+			}
+			if (ImGui::MenuItem("Save As..")) {
+				// Acciï¿½n para guardar como
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Exit", "Alt+F4")) {
+				// Acciï¿½n para salir
+				exit(1);
+			}
+			ImGui::EndMenu();
+		}
 
-      /* ----------  Sub-menú con los archivos recientes ---------- */
-      if (ImGui::BeginMenu("Recent Files"))
-      {
-        // En la práctica, llena este array leyendo un historial.
-        const char* recents[] = { "level01.scene", "tutorial.scene", "myTest.scene" };
-        for (const char* f : recents)
-          if (ImGui::MenuItem(f)) {/* TODO: abrir f */ }
-        ImGui::EndMenu();
-      }
+		// Menï¿½ Editar
+		if (ImGui::BeginMenu("Edit")) {
+			if (ImGui::MenuItem("Undo", "Ctrl+Z")) {
+				// Acciï¿½n para deshacer
+			}
+			if (ImGui::MenuItem("Redo", "Ctrl+Y")) {
+				// Acciï¿½n para rehacer
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cut", "Ctrl+X")) {
+				// Acciï¿½n para cortar
+			}
+			if (ImGui::MenuItem("Copy", "Ctrl+C")) {
+				// Acciï¿½n para copiar
+			}
+			if (ImGui::MenuItem("Paste", "Ctrl+V")) {
+				// Acciï¿½n para pegar
+			}
+			ImGui::EndMenu();
+		}
 
-      ImGui::Separator();
-      if (ImGui::MenuItem("Exit", "Alt+F4")) {/* TODO: salir */ }
-      ImGui::EndMenu();
-    }
+		// Menï¿½ Ver
+		if (ImGui::BeginMenu("View")) {
+			if (ImGui::MenuItem("Show Console")) {
+				// Acciï¿½n para mostrar la consola
+			}
+			if (ImGui::MenuItem("Show Hierarchy")) {
+				// Acciï¿½n para mostrar la jerarquï¿½a
+			}
+			ImGui::EndMenu();
+		}
 
-    /* ====================  EDIT  ==================== */
-    if (ImGui::BeginMenu("Edit"))
-    {
-      ImGui::MenuItem("Undo", "Ctrl+Z");
-      ImGui::MenuItem("Redo", "Ctrl+Y");
-      ImGui::Separator();
-      ImGui::MenuItem("Cut", "Ctrl+X");
-      ImGui::MenuItem("Copy", "Ctrl+C");
-      ImGui::MenuItem("Paste", "Ctrl+V");
-      ImGui::EndMenu();
-    }
+		// Menï¿½ Herramientas
+		if (ImGui::BeginMenu("Tools")) {
+			if (ImGui::MenuItem("Options")) {
+				// Acciï¿½n para mostrar opciones
+			}
+			ImGui::EndMenu();
+		}
 
-    /* ====================  VIEW  ==================== */
-    if (ImGui::BeginMenu("View"))
-    {
-      ImGui::MenuItem("Hierarchy");
-      ImGui::MenuItem("Inspector");
-      ImGui::MenuItem("Console");
-      ImGui::MenuItem("File Manager");
-      ImGui::EndMenu();
-    }
+		// Menï¿½ Ayuda
+		if (ImGui::BeginMenu("Help")) {
+			if (ImGui::MenuItem("Documentation")) {
+				// Acciï¿½n para abrir documentaciï¿½n
+			}
+			if (ImGui::MenuItem("About")) {
+				// Acciï¿½n para mostrar informaciï¿½n sobre el programa
+			}
+			ImGui::EndMenu();
+		}
 
-    /* ====================  WINDOW  ==================== */
-    if (ImGui::BeginMenu("Window"))
-    {
-      ImGui::MenuItem("Maximize");
-      ImGui::MenuItem("Minimize");
-      ImGui::MenuItem("Reset Layout");
-      ImGui::EndMenu();
-    }
-
-    /* ====================  HELP  ==================== */
-    if (ImGui::BeginMenu("Help"))
-    {
-      ImGui::MenuItem("Documentation  (F1)");
-      ImGui::MenuItem("Report a Bug");
-      ImGui::MenuItem("About VektorCoreEngine");
-      ImGui::EndMenu();
-    }
-
-    ImGui::EndMainMenuBar();
-  }
+		ImGui::EndMainMenuBar();
+	}
 }
 
-// ---- HIERARCHY ----
-void
-EngineGUI::hierarchy(const std::vector<EngineUtilities::TSharedPointer<Actor>>& actors) {
-  ImGui::Begin("Hierarchy");
-  for (int i = 0; i < actors.size(); ++i) {
-    std::string name = actors[i]->getName();
-    bool isSelected = (selectedActorIndex == i);
-    if (ImGui::Selectable(name.c_str(), isSelected, ImGuiSelectableFlags_AllowDoubleClick)) {
-      selectedActorIndex = i;
-    }
-    if (isSelected) {
-      ImDrawList* draw_list = ImGui::GetWindowDrawList();
-      ImVec2 p_min = ImGui::GetItemRectMin();
-      ImVec2 p_max = ImGui::GetItemRectMax();
-      draw_list->AddRect(p_min, p_max, IM_COL32(180, 40, 255, 255), 4.0f, 0, 3.5f);
-    }
-  }
-  ImGui::End();
+void 
+EngineGUI::outliner(const std::vector<EngineUtilities::TSharedPointer<Actor>>& actors) {
+	ImGui::Begin("Hierarchy");
+
+	// Barra de bï¿½squeda
+	static ImGuiTextFilter filter;
+	filter.Draw("Search...", 180.0f); // Barra de bï¿½squeda con ancho ajustable
+
+	ImGui::Separator();
+
+	// Recorrer y mostrar cada actor que pase el filtro de bï¿½squeda
+	for (int i = 0; i < actors.size(); ++i) {
+		const auto& actor = actors[i];
+
+		// Obtener el nombre del actor o asignar un nombre genï¿½rico
+		std::string actorName = actor ? actor->getName() : "Unnamed Actor";
+
+		// Verificar si el actor pasa el filtro de bï¿½squeda
+		if (!filter.PassFilter(actorName.c_str())) {
+			continue; // Saltar actores que no coincidan con el filtro
+		}
+
+		// Si el actor es seleccionable
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+		if (selectedActorIndex == i)
+			flags |= ImGuiTreeNodeFlags_Selected;
+
+		// Crear un nodo de ï¿½rbol para cada actor
+		bool nodeOpen = ImGui::TreeNodeEx((void*)(intptr_t)i, flags, "%s", actorName.c_str());
+
+		// Selecciï¿½n de actor
+		if (ImGui::IsItemClicked()) {
+			selectedActorIndex = i;
+			// Aquï¿½ puedes llamar a alguna funciï¿½n para mostrar los detalles del actor en otra ventana
+		}
+
+		// Mostrar nodos hijos si el nodo estï¿½ abierto
+		if (nodeOpen) {
+			//ImGui::Text("Position: %.2f, %.2f, %.2f", actor->getPosition().x, actor->getPosition().y, actor->getPosition().z);
+			ImGui::TreePop();
+		}
+	}
+
+	ImGui::End();
 }
 
-// ---- INSPECTOR (modifica el actor seleccionado con botones XYZ a color y sliders) ----
-void
+void 
+EngineGUI::console(const std::map<ConsolErrorType, std::vector<std::string>>& programMessages) {
+	ImGui::Begin("Console");
+
+	static ImGuiTextFilter filter; // Filtro de bï¿½squeda
+	filter.Draw("Filter (\"error\", \"warning\", etc.)", 180.0f);
+
+	ImGui::Separator();
+
+	ImGui::BeginChild("ScrollingRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
+
+	for (const auto& pair : programMessages) {
+		// Establece color segï¿½n el tipo de mensaje
+		ImVec4 color;
+		switch (pair.first) {
+		case ConsolErrorType::ERROR:
+			color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); // Rojo para errores
+			break;
+		case ConsolErrorType::WARNING:
+			color = ImVec4(1.0f, 1.0f, 0.4f, 1.0f); // Amarillo para advertencias
+			break;
+		case ConsolErrorType::INFO:
+		default:
+			color = ImVec4(0.8f, 0.8f, 0.8f, 1.0f); // Gris para mensajes de informaciï¿½n
+			break;
+		}
+
+		for (const auto& message : pair.second) {
+			if (!filter.PassFilter(message.c_str())) continue; // Filtrar mensajes segï¿½n el filtro de bï¿½squeda
+
+			ImGui::PushStyleColor(ImGuiCol_Text, color);
+			ImGui::Text("[%d] %s", pair.first, message.c_str());
+			ImGui::PopStyleColor();
+		}
+	}
+
+	// Desplazamiento automï¿½tico al final
+	if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+		ImGui::SetScrollHereY(1.0f);
+
+	ImGui::EndChild();
+	ImGui::End();
+}
+
+void 
 EngineGUI::inspector(const std::vector<EngineUtilities::TSharedPointer<Actor>>& actors) {
-  ImGui::Begin("Inspector");
+	bool show_demo_window = true;
+	ImGui::Begin("Inspector");
+	// Checkbox para Static
+	bool isStatic = false;
+	ImGui::Checkbox("##Static", &isStatic);
+	ImGui::SameLine();
 
-  if (selectedActorIndex >= 0 && selectedActorIndex < actors.size() && actors[selectedActorIndex]) {
-    auto actor = actors[selectedActorIndex];
+	// Input text para el nombre del objeto
+	char objectName[128];
+	std::string name = actors[selectedActorIndex]->getName();
+	std::copy(name.begin(), name.end(), objectName);
+	objectName[name.size()] = '\0';  // Asegurarse de terminar la cadena
 
-    bool isStatic = false;
-    ImGui::Checkbox("##Static", &isStatic);
-    ImGui::SameLine();
+	//ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() * 0.6f);
+	ImGui::InputText("##ObjectName", objectName, IM_ARRAYSIZE(objectName));
+	ImGui::SameLine();
 
-    char objectName[128];
-    std::string name = actor->getName();
-    std::copy(name.begin(), name.end(), objectName);
-    objectName[name.size()] = '\0';
+	// Icono (este puede ser una imagen, aquï¿½ solo como ejemplo de botï¿½n)
+	if (ImGui::Button("Icon")) {
+		// Lï¿½gica del botï¿½n de icono aquï¿½
+	}
 
-    ImGui::InputText("##ObjectName", objectName, IM_ARRAYSIZE(objectName));
-    ImGui::SameLine();
+	// Separador horizontal
+	ImGui::Separator();
 
-    if (ImGui::Button("Icon")) {
-    }
+	// Dropdown para Tag
+	const char* tags[] = { "Untagged", "Player", "Enemy", "Environment" };
+	static int currentTag = 0;
+	//ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() * 0.5f);
+	ImGui::Combo("Tag", &currentTag, tags, IM_ARRAYSIZE(tags));
+	ImGui::SameLine();
 
-    ImGui::Separator();
+	// Dropdown para Layer
+	const char* layers[] = { "Default", "TransparentFX", "Ignore Raycast", "Water", "UI" };
+	static int currentLayer = 0;
+	//ImGui::SetNextItemWidth(ImGui::GetContentRegionAvailWidth() * 0.5f);
+	ImGui::Combo("Layer", &currentLayer, layers, IM_ARRAYSIZE(layers));
 
-    const char* tags[] = { "Untagged", "Player", "Enemy", "Environment" };
-    static int currentTag = 0;
-    ImGui::Combo("Tag", &currentTag, tags, IM_ARRAYSIZE(tags));
-    ImGui::SameLine();
+	ImGui::Separator();
 
-    const char* layers[] = { "Default", "TransparentFX", "Ignore Raycast", "Water", "UI" };
-    static int currentLayer = 0;
-    ImGui::Combo("Layer", &currentLayer, layers, IM_ARRAYSIZE(layers));
+	// Transform elements
+	vec2Control("Position", actors[selectedActorIndex]->getComponent<Transform>()->getPosData());
+	vec2Control("Rotation", actors[selectedActorIndex]->getComponent<Transform>()->getRotData());
+	vec2Control("Scale", actors[selectedActorIndex]->getComponent<Transform>()->getScaData());
 
-    ImGui::Separator();
-    // --- Fin bloque nuevo ---
+	ImGui::End();
+}
 
-    auto transform = actor->getComponent<Transform>();
-    if (transform) {
-      float pos[3] = { transform->getPosition().x, transform->getPosition().y, 0.0f };
-      float rot[3] = { transform->getRotation().x, transform->getRotation().y, 0.0f };
-      float sca[3] = { transform->getScale().x, transform->getScale().y, 1.0f };
+void EngineGUI::vec2Control(const std::string& label,
+	float* values,
+	float resetValues,
+	float columnWidth) {
+	ImGuiIO& io = ImGui::GetIO();
+	auto boldFont = io.Fonts->Fonts[0];
 
-      ImGui::PushItemWidth(60);
+	ImGui::PushID(label.c_str());
 
-      // Position
-      ImGui::Text("Position");
-      ImGui::SameLine(100);
-      ImGui::PushID("PosX");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.85f, 0.25f, 0.25f, 1.0f));
-      ImGui::Button("X"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##PosX", &pos[0], 0.5f);
-      ImGui::PopID();
+	ImGui::Columns(2);
+	ImGui::SetColumnWidth(0, columnWidth);
+	ImGui::Text(label.c_str());
+	ImGui::NextColumn();
 
-      ImGui::SameLine(); ImGui::PushID("PosY");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.25f, 0.85f, 0.25f, 1.0f));
-      ImGui::Button("Y"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##PosY", &pos[1], 0.5f);
-      ImGui::PopID();
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
-      ImGui::SameLine(); ImGui::PushID("PosZ");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.25f, 0.25f, 0.85f, 1.0f));
-      ImGui::Button("Z"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##PosZ", &pos[2], 0.5f);
-      ImGui::PopID();
+	float lineHeight = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
+	ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
 
-      // Rotation
-      ImGui::Text("Rotation");
-      ImGui::SameLine(100);
-      ImGui::PushID("RotX");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.85f, 0.25f, 0.25f, 1.0f));
-      ImGui::Button("X"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##RotX", &rot[0], 1.0f);
-      ImGui::PopID();
+	float fullWidth = ImGui::CalcItemWidth();
+	float itemWidth = fullWidth / 3.0f;
 
-      ImGui::SameLine(); ImGui::PushID("RotY");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.25f, 0.85f, 0.25f, 1.0f));
-      ImGui::Button("Y"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##RotY", &rot[1], 1.0f);
-      ImGui::PopID();
+	// --- X Control ---
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+	ImGui::PushFont(boldFont);
+	if (ImGui::Button("X", buttonSize)) values[0] = resetValues;
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
 
-      ImGui::SameLine(); ImGui::PushID("RotZ");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.25f, 0.25f, 0.85f, 1.0f));
-      ImGui::Button("Z"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##RotZ", &rot[2], 1.0f);
-      ImGui::PopID();
+	ImGui::SameLine();
+	ImGui::PushItemWidth(itemWidth);
+	ImGui::DragFloat("##X", &values[0], 0.1f, 0.0f, 0.0f, "%.2f");
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
 
-      // Scale
-      ImGui::Text("Scale");
-      ImGui::SameLine(100);
-      ImGui::PushID("ScaX");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.85f, 0.25f, 0.25f, 1.0f));
-      ImGui::Button("X"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##ScaX", &sca[0], 0.05f, 0.01f, 100.0f);
-      ImGui::PopID();
+	// --- Y Control ---
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+	ImGui::PushFont(boldFont);
+	if (ImGui::Button("Y", buttonSize)) values[1] = resetValues;
+	ImGui::PopFont();
+	ImGui::PopStyleColor(3);
 
-      ImGui::SameLine(); ImGui::PushID("ScaY");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.25f, 0.85f, 0.25f, 1.0f));
-      ImGui::Button("Y"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##ScaY", &sca[1], 0.05f, 0.01f, 100.0f);
-      ImGui::PopID();
+	ImGui::SameLine();
+	ImGui::PushItemWidth(itemWidth);
+	ImGui::DragFloat("##Y", &values[1], 0.1f, 0.0f, 0.0f, "%.2f");
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
 
-      ImGui::SameLine(); ImGui::PushID("ScaZ");
-      ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.25f, 0.25f, 0.85f, 1.0f));
-      ImGui::Button("Z"); ImGui::PopStyleColor();
-      ImGui::SameLine(); ImGui::DragFloat("##ScaZ", &sca[2], 0.05f, 0.01f, 100.0f);
-      ImGui::PopID();
-
-      // Aplicar cambios
-      transform->setPosition(sf::Vector2f(pos[0], pos[1]));
-      transform->setRotation(sf::Vector2f(rot[0], rot[1]));
-      transform->setScale(sf::Vector2f(sca[0], sca[1]));
-
-      ImGui::PopItemWidth();
-    }
-  }
-
-  ImGui::End();
+	ImGui::PopStyleVar();
+	ImGui::Columns(1);
+	ImGui::PopID();
 }
 
 
+void 
+EngineGUI::setupGreyGUIStyle() {
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4* colors = style.Colors;
 
-// ---- CONSOLE ----
-void
-EngineGUI::console() {
-  ImGui::Begin("Console");
-  ImGui::Text("Logs and messages will appear here.");
-  ImGui::End();
+	// Configuraciï¿½n de los colores basados en el estilo de Unreal Engine 5
+	colors[ImGuiCol_WindowBg] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);  // Fondo de ventana
+	colors[ImGuiCol_Border] = ImVec4(0.40f, 0.40f, 0.40f, 0.50f);  // Bordes
+	colors[ImGuiCol_FrameBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);  // Fondo de cuadros
+	colors[ImGuiCol_FrameBgHovered] = ImVec4(0.24f, 0.24f, 0.24f, 1.00f);  // Hover sobre cuadros
+	colors[ImGuiCol_FrameBgActive] = ImVec4(0.34f, 0.34f, 0.34f, 1.00f);  // Cuadro activo
+	colors[ImGuiCol_TitleBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.00f);  // Fondo del tï¿½tulo
+	colors[ImGuiCol_TitleBgActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);  // Tï¿½tulo activo
+	colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);  // Fondo de la barra de menï¿½
+	colors[ImGuiCol_Button] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);  // Botï¿½n inactivo
+	colors[ImGuiCol_ButtonHovered] = ImVec4(0.30f, 0.30f, 0.30f, 1.00f);  // Botï¿½n hover
+	colors[ImGuiCol_ButtonActive] = ImVec4(0.40f, 0.40f, 0.40f, 1.00f);  // Botï¿½n activo
+	colors[ImGuiCol_Text] = ImVec4(0.85f, 0.85f, 0.85f, 1.00f);  // Texto principal
+	colors[ImGuiCol_TextDisabled] = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);  // Texto deshabilitado
+	colors[ImGuiCol_Header] = ImVec4(0.24f, 0.24f, 0.24f, 1.00f);  // Encabezado
+	colors[ImGuiCol_HeaderHovered] = ImVec4(0.34f, 0.34f, 0.34f, 1.00f);  // Encabezado hover
+	colors[ImGuiCol_HeaderActive] = ImVec4(0.45f, 0.45f, 0.45f, 1.00f);  // Encabezado activo
+	colors[ImGuiCol_ScrollbarBg] = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);  // Fondo scrollbar
+	colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.30f, 0.30f, 0.30f, 1.00f);  // Scrollbar inactivo
+	colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.40f, 0.40f, 0.40f, 1.00f); // Scrollbar hover
+	colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f); // Scrollbar activo
+	colors[ImGuiCol_CheckMark] = ImVec4(0.85f, 0.85f, 0.85f, 1.00f);  // Marca de check
+
+	// Ajustes de estilo general
+	style.WindowRounding = 5.0f;   // Redondeo de bordes de ventanas
+	style.FrameRounding = 5.0f;   // Redondeo de bordes de cuadros
+	style.ScrollbarRounding = 5.0f;   // Redondeo de bordes de scrollbar
+	style.GrabRounding = 5.0f;   // Redondeo de bordes de botones de agarrar
+	style.FrameBorderSize = 1.0f;   // Grosor del borde de cuadros
+	style.WindowBorderSize = 1.0f;   // Grosor del borde de ventanas
+	style.PopupBorderSize = 1.0f;   // Grosor del borde de popups
 }
 
-// ---- OUTLINE DRAW ----
-void
-EngineGUI::drawSelectedOutline(
-  sf::RenderWindow* renderWindow,
-  const std::vector<EngineUtilities::TSharedPointer<Actor>>& actors)
-{
-  int idx = selectedActorIndex;
-  if (idx >= 0 && idx < actors.size() && actors[idx]) {
-    auto shapeComp = actors[idx]->getComponent<CShape>();
-    if (shapeComp) {
-      auto shapePtr = shapeComp->getShapePtr();
-      if (shapePtr) {
-        float thickness = 2.0f; // Default
-        // If is track, thinner
-        if (actors[idx]->getName() == "Track Actor")
-          thickness = 0.5f;
-        sf::Color oldOutlineColor = shapePtr->getOutlineColor();
-        float oldThickness = shapePtr->getOutlineThickness();
-        sf::Color oldFill = shapePtr->getFillColor();
-
-        shapePtr->setOutlineThickness(thickness);
-        shapePtr->setOutlineColor(sf::Color(180, 40, 255)); // neon purple
-        shapePtr->setFillColor(sf::Color(0, 0, 0, 0));
-        renderWindow->draw(*shapePtr);
-
-        // Restore
-        shapePtr->setOutlineColor(oldOutlineColor);
-        shapePtr->setOutlineThickness(oldThickness);
-        shapePtr->setFillColor(oldFill);
-      }
-    }
-  }
-}
-
-
-// ---- FILE MANAGER PANEL ----
-void
-EngineGUI::fileManagerPanel(std::vector<EngineUtilities::TSharedPointer<Actor>>& actors) {
-  ImGui::Begin("File Manager");
-  static char fileName[128] = "actors.txt";
-  ImGui::InputText("Actors File", fileName, IM_ARRAYSIZE(fileName));
-  if (ImGui::Button("Save Actors")) {
-    ActorSerializer::saveActorsToFile(fileName, actors);
-  }
-  ImGui::SameLine();
-  if (ImGui::Button("Load Actors")) {
-    actors.clear();
-    ActorSerializer::loadActorsFromFile(fileName, actors);
-  }
-  ImGui::Separator();
-  ImGui::Text("Available files:");
-  for (const auto& entry : fs::directory_iterator(".")) {
-    std::string fname = entry.path().filename().string();
-    if (fname.size() >= 4 && fname.substr(fname.size() - 4) == ".txt") {
-      if (ImGui::Selectable(fname.c_str())) {
-        strncpy(fileName, fname.c_str(), sizeof(fileName));
-      }
-    }
-  }
-  ImGui::End();
+void 
+EngineGUI::destroy() {
+	ImGui::SFML::Shutdown();
 }

@@ -120,10 +120,10 @@ private:
   int      m_colorIdx = 0;      ///< Color selection index (0..3)
   int      m_trackIdx = 0;      ///< Selected track index
   sf::Color m_colorOptions[4] = {
-    sf::Color::Cyan,
-    sf::Color::Red,
-    sf::Color::Yellow,
-    sf::Color::Magenta
+    sf::Color::Black,
+    sf::Color::Green,
+    sf::Color::Blue,
+    sf::Color::Yellow
   };
 
   /* === HUD helpers (layout only, no game state changes) === */

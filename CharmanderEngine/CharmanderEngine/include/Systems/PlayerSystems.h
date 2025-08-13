@@ -11,7 +11,7 @@
  * config is passed to PlayerInputSystem for per-frame input processing.
  */
 struct
-  PlayerInputConfig {
+  PlayerConfig {
   /** Pointer to the player actor being controlled. */
   EngineUtilities::TSharedPointer<A_Player> player;
 
@@ -29,19 +29,19 @@ struct
  * at construction to know which player to control and where to read input.
  */
 class
-  PlayerInputSystem {
+  PlayerSystem {
 
 public:
   /**
    * @brief Construct the input system with a configuration.
    * @param cfg Player and window references.
    */
-  PlayerInputSystem(const PlayerInputConfig& cfg) : cfg(cfg) {}
+  PlayerSystem(const PlayerConfig& cfg) : cfg(cfg) {}
 
   /**
    * @brief Virtual destructor (default).
    */
-  ~PlayerInputSystem() = default;
+  ~PlayerSystem() = default;
 
   /**
    * @brief Per-frame input update.
@@ -52,7 +52,7 @@ public:
 
 private:
   /** Configuration holding references for input processing. */
-  PlayerInputConfig cfg;
+  PlayerConfig cfg;
 
   /**
    * @brief Process input for Direct control mode (WASD).

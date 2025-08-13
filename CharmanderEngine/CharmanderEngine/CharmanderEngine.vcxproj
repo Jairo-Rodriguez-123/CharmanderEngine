@@ -30,6 +30,7 @@
     <ClCompile Include="src\Systems\RaceSystem.cpp" />
     <ClCompile Include="src\Systems\SteeringSystem.cpp" />
     <ClCompile Include="src\Systems\WaypointFollorSystem.cpp" />
+    <ClCompile Include="src\Utilities\CVector2.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -52,10 +53,9 @@
     <ClInclude Include="include\Memory\TWeakPointer.h" />
     <ClInclude Include="include\Prerequisites.h" />
     <ClInclude Include="include\ResourceManager.h" />
-    <ClInclude Include="include\Systems\PlayerInputSystems.h" />
+    <ClInclude Include="include\Systems\PlayerSystems.h" />
     <ClInclude Include="include\Systems\RaceSystem.h" />
-    <ClInclude Include="include\Systems\SteerringSystem.h" />
-    <ClInclude Include="include\Systems\WaypointFollowSystem.h" />
+    <ClInclude Include="include\Systems\WaypointSystem.h" />
     <ClInclude Include="include\Systems\WaypointMaganer.h" />
     <ClInclude Include="include\Utilities\Cvector2.h" />
     <ClInclude Include="include\Window.h" />
@@ -63,7 +63,7 @@
   <ItemGroup>
     <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Racers - Koopa Troopa.png" />
     <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Racers - Toad.png" />
-    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Tracks - Mario Circuit 3.png" />
+    <Image Include="..\..\..\Downloads\m_ATrack.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

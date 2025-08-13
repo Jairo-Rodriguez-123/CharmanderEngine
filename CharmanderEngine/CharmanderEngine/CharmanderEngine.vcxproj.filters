@@ -40,7 +40,7 @@
     <Filter Include="Circuit">
       <UniqueIdentifier>{1f362828-50f4-49f4-93d6-881031b1d584}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems.cpp">
+    <Filter Include="Systems\Systems.cpp">
       <UniqueIdentifier>{d46c6f42-665e-4ecc-aa0d-b8556960d3ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -70,16 +70,19 @@
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
     <ClCompile Include="src\Systems\PlayerInputSystem.cpp">
-      <Filter>Systems.cpp</Filter>
+      <Filter>Systems\Systems.cpp</Filter>
     </ClCompile>
     <ClCompile Include="src\Systems\RaceSystem.cpp">
-      <Filter>Systems.cpp</Filter>
+      <Filter>Systems\Systems.cpp</Filter>
     </ClCompile>
     <ClCompile Include="src\Systems\SteeringSystem.cpp">
-      <Filter>Systems.cpp</Filter>
+      <Filter>Systems\Systems.cpp</Filter>
     </ClCompile>
     <ClCompile Include="src\Systems\WaypointFollorSystem.cpp">
-      <Filter>Systems.cpp</Filter>
+      <Filter>Systems\Systems.cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities\CVector2.cpp">
+      <Filter>Archivos de recursos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,16 +140,13 @@
     <ClInclude Include="include\ECS\A_Racer.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="include\Systems\PlayerInputSystems.h">
+    <ClInclude Include="include\Systems\PlayerSystems.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="include\Systems\RaceSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="include\Systems\SteerringSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Systems\WaypointFollowSystem.h">
+    <ClInclude Include="include\Systems\WaypointSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="include\Systems\WaypointMaganer.h">
@@ -163,7 +163,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Tracks - Mario Circuit 3.png">
+    <Image Include="..\..\..\Downloads\m_ATrack.png">
       <Filter>Assets\Textures\Tracks</Filter>
     </Image>
     <Image Include="..\..\..\Downloads\SNES - Super Mario Kart - Racers - Koopa Troopa.png">

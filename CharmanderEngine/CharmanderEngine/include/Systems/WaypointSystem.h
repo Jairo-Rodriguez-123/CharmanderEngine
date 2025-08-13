@@ -6,7 +6,7 @@
 #include "ECS/A_Racer.h"
 
 /**
- * @struct WaypointFollowConfig
+ * @struct WaypointConfig
  * @brief Configuration for AI racers to follow a waypoint circuit.
  *
  * @details
@@ -16,7 +16,7 @@
  * in tight corners.
  */
 struct
-  WaypointFollowConfig {
+  WaypointConfig {
   /** Racers to control via waypoint following logic. */
   std::vector<EngineUtilities::TSharedPointer<A_Racer>> racers;
 
@@ -74,14 +74,14 @@ struct
  * sharp corners. Keeps racers within a corridor to prevent cutting the track.
  */
 class
-  WaypointFollowSystem {
+  WaypointSystem {
 
 public:
   /**
    * @brief Construct system with config and initialize state.
    * @param cfg Configuration for waypoint following behavior.
    */
-  WaypointFollowSystem(const WaypointFollowConfig& cfg)
+  WaypointSystem(const WaypointConfig& cfg)
     : cfg(cfg),
     indices(cfg.racers.size(), 0),
     reactTimers(cfg.racers.size(), 0.f),
@@ -94,7 +94,7 @@ public:
   /**
    * @brief Virtual destructor (default).
    */
-  ~WaypointFollowSystem() = default;
+  ~WaypointSystem() = default;
 
   /**
    * @brief Initialize waypoint indices based on current positions.
@@ -123,7 +123,7 @@ public:
 
 private:
   /** Config parameters for waypoint following. */
-  WaypointFollowConfig cfg;
+  WaypointConfig cfg;
 
   /** Current waypoint index for each racer. */
   std::vector<size_t> indices;

@@ -1,4 +1,4 @@
-#include "CShape.h"
+﻿#include "CShape.h"
 #include "Window.h"
 #include "ECS\Texture.h"
 void
@@ -6,6 +6,7 @@ CShape::createShape(ShapeType type) {
 	m_shapeType = type;
 	switch (type) {
 	case ShapeType::CIRCLE: {
+		// Creamos un CircleShape y lo �bajamos� a sf::Shape
 		auto circleSP = EngineUtilities::MakeShared<sf::CircleShape>(10.f);
 		circleSP->setFillColor(sf::Color::White);
 		m_shapePtr = circleSP.dynamic_pointer_cast<sf::Shape>();

@@ -17,7 +17,7 @@ public:
    * @brief Construct a countdown with a total time in seconds.
    * @param seconds Total countdown duration (default 3.0f).
    */
-  RaceCountdown(float seconds = 3.f)
+  RaceCountdown(float seconds = 5.f)
     : total_(seconds),
     remaining_(seconds),
     started_(false),

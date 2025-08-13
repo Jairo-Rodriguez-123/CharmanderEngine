@@ -3,7 +3,6 @@
 #include "Prerequisites.h"
 #include "ECS/Actor.h"
 #include "ECS/Transform.h"
-#include "Components/LapComponent.h"
 #include <vector>
 #include "Vectors/CVector2.h"
 
