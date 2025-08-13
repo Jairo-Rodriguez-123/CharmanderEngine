@@ -1,23 +1,39 @@
 #include "ECS/Actor.h"
 
+// Constructor: sets name, creates default Shape and Transform components.
 Actor::Actor(const std::string& actorName) {
-  //Setup actor name
   m_name = actorName;
 
-  //Setup shape
-  EngineUtilities::TSharedPointer<CShape> shape = EngineUtilities::MakeShared<CShape>();
+  EngineUtilities::TSharedPointer<CShape> shape =
+    EngineUtilities::MakeShared<CShape>();
   addComponent(shape);
 
-  //Setup transform
-  EngineUtilities::TSharedPointer<Transform> transform = EngineUtilities::MakeShared<Transform>();
+  EngineUtilities::TSharedPointer<Transform> transform =
+    EngineUtilities::MakeShared<Transform>();
   addComponent(transform);
 }
 
-void 
+// Render: calls render() on all components.
+void
+Actor::render(const EngineUtilities::TSharedPointer<Window>& window) {
+  for (unsigned int i = 0; i < components.size(); i++) {
+    auto component = components[i];
+    if (component) {
+      component->render(window);
+    }
+  }
+}
+
+// Start: currently does nothing.
+void
+Actor::start() {}
+
+// Update: syncs shape with transform.
+void
 Actor::update(float deltaTime) {
-  auto transform = getComponent<TRANSFORM>(); 
+  auto transform = getComponent<Transform>();
   auto shape = getComponent<CShape>();
-  
+
   if (transform && shape) {
     shape->setPosition(transform->getPosition());
     shape->setRotation(transform->getRotation().x);
@@ -25,12 +41,16 @@ Actor::update(float deltaTime) {
   }
 }
 
+// Destroy: currently does nothing.
 void
-Actor::render(const EngineUtilities::TSharedPointer<Window>& window) {
-  for (unsigned int i = 0; i < components.size(); i++) {
-    auto shape = components[i].dynamic_pointer_cast<CShape>();
-    if (shape) {
-      shape->render(window);
-    }
+Actor::destroy() {}
+
+// Set texture: assigns texture to the shape and adds it as a component.
+void
+Actor::setTexture(const EngineUtilities::TSharedPointer<Texture>& texture) {
+  auto shape = getComponent<CShape>();
+  if (shape && !texture.isNull()) {
+    shape->setTexture(texture);
+    addComponent(texture);
   }
 }

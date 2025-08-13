@@ -19,27 +19,47 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\ActorSerializer.cpp" />
     <ClCompile Include="src\BaseApp.cpp" />
     <ClCompile Include="src\CShape.cpp" />
     <ClCompile Include="src\ECS\Actor.cpp" />
+    <ClCompile Include="src\ECS\A_Racer.cpp" />
+    <ClCompile Include="src\EngineGUI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
+    <ClCompile Include="src\Systems\PlayerInputSystem.cpp" />
+    <ClCompile Include="src\Systems\RaceSystem.cpp" />
+    <ClCompile Include="src\Systems\SteeringSystem.cpp" />
+    <ClCompile Include="src\Systems\WaypointFollorSystem.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ActorPicker.h" />
+    <ClInclude Include="include\ActorSerializer.h" />
     <ClInclude Include="include\BaseApp.h" />
+    <ClInclude Include="include\Circuit\Circuit1.h" />
+    <ClInclude Include="include\Components\LapComponent.h" />
+    <ClInclude Include="include\Components\RaceCountdown.h" />
     <ClInclude Include="include\CShape.h" />
     <ClInclude Include="include\ECS\Actor.h" />
+    <ClInclude Include="include\ECS\A_Player.h" />
+    <ClInclude Include="include\ECS\A_Racer.h" />
     <ClInclude Include="include\ECS\Component.h" />
     <ClInclude Include="include\ECS\Entity.h" />
     <ClInclude Include="include\ECS\Texture.h" />
     <ClInclude Include="include\ECS\transform.h" />
+    <ClInclude Include="include\EngineGUI.h" />
     <ClInclude Include="include\Memory\TSharedPointer.h" />
     <ClInclude Include="include\Memory\TStaticPtr.h" />
     <ClInclude Include="include\Memory\TUniquePtr.h" />
     <ClInclude Include="include\Memory\TWeakPointer.h" />
     <ClInclude Include="include\Prerequisites.h" />
     <ClInclude Include="include\ResourceManager.h" />
+    <ClInclude Include="include\Systems\PlayerInputSystems.h" />
+    <ClInclude Include="include\Systems\RaceSystem.h" />
+    <ClInclude Include="include\Systems\SteerringSystem.h" />
+    <ClInclude Include="include\Systems\WaypointFollowSystem.h" />
+    <ClInclude Include="include\Systems\WaypointMaganer.h" />
     <ClInclude Include="include\Utilities\Cvector2.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>

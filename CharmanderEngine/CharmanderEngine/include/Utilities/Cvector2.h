@@ -1,177 +1,205 @@
 #pragma once
-#include "..\Prerequisites.h"
 
-class CVector2
-{
+#include "../Prerequisites.h"
+
+/**
+ * @class CVector2
+ * @brief 2D vector class with basic vector operations.
+ *
+ * Provides utility for 2D mathematical operations such as addition, subtraction,
+ * normalization, dot product, length, and interpolation.
+ */
+class
+  CVector2 {
 public:
-	CVector2() { m_x = 0; m_y = 0; };
+  float x; ///< X component of the vector
+  float y; ///< Y component of the vector
 
-	CVector2(float x, float y) { m_x = x; m_y = y; };
+  /**
+   * @brief Default constructor initializes vector to (0,0).
+   */
+  CVector2() : x(0), y(0) {}
 
-	CVector2
-		operator+(const CVector2& other) const {
+  /**
+   * @brief Constructor initializes vector with given components.
+   * @param x X component.
+   * @param y Y component.
+   */
+  CVector2(float x, float y) : x(x), y(y) {}
 
-		return CVector2(m_x + other.m_x, m_y + other.m_y);
+  /**
+   * @brief Vector addition.
+   * @param other Vector to add.
+   * @return Resulting vector.
+   */
+  CVector2
+    operator+(const CVector2& other) const;
 
-	}
+  /**
+   * @brief Vector subtraction.
+   * @param other Vector to subtract.
+   * @return Resulting vector.
+   */
+  CVector2
+    operator-(const CVector2& other) const;
 
-	
-	CVector2
-		operator-(const CVector2& other) const {
+  /**
+   * @brief Scalar multiplication.
+   * @param scalar Value to multiply with.
+   * @return Scaled vector.
+   */
+  CVector2
+    operator*(float scalar) const;
 
-		return CVector2(m_x - other.m_x, m_y - other.m_y);
+  /**
+   * @brief Scalar division.
+   * @param scalar Value to divide by.
+   * @return Scaled vector.
+   */
+  CVector2
+    operator/(float scalar) const;
 
-	}
+  /**
+   * @brief Adds another vector to this vector.
+   * @param other Vector to add.
+   * @return Reference to this vector.
+   */
+  CVector2&
+    operator+=(const CVector2& other);
 
-	
-	CVector2
-		operator*(const CVector2& other) const {
+  /**
+   * @brief Subtracts another vector from this vector.
+   * @param other Vector to subtract.
+   * @return Reference to this vector.
+   */
+  CVector2&
+    operator-=(const CVector2& other);
 
-		return CVector2(m_x * other.m_x, m_y * other.m_y);
+  /**
+   * @brief Multiplies this vector by a scalar.
+   * @param scalar Value to multiply with.
+   * @return Reference to this vector.
+   */
+  CVector2&
+    operator*=(float scalar);
 
-	}
+  /**
+   * @brief Divides this vector by a scalar.
+   * @param scalar Value to divide by.
+   * @return Reference to this vector.
+   */
+  CVector2&
+    operator/=(float scalar);
 
-	
-	CVector2
-		operator*(float scalar) const {
+  /**
+   * @brief Equality comparison.
+   * @param other Vector to compare with.
+   * @return True if both components are equal.
+   */
+  bool
+    operator==(const CVector2& other) const;
 
-		return CVector2(m_x * scalar, m_y * scalar);
+  /**
+   * @brief Inequality comparison.
+   * @param other Vector to compare with.
+   * @return True if components are not equal.
+   */
+  bool
+    operator!=(const CVector2& other) const;
 
-	}
+  /**
+   * @brief Access vector component by index.
+   * @param index 0 for x, 1 for y.
+   * @return Reference to component.
+   */
+  float&
+    operator[](int index);
 
-	
-	CVector2
-		operator/(const CVector2& other) const {
+  /**
+   * @brief Access vector component by index (const).
+   * @param index 0 for x, 1 for y.
+   * @return Const reference to component.
+   */
+  const float&
+    operator[](int index) const;
 
-		return CVector2(m_x / other.m_x, m_y / other.m_y);
+  /**
+   * @brief Returns the squared length of the vector.
+   * @return Squared length.
+   */
+  float
+    lengthSquare() const;
 
-	}
+  /**
+   * @brief Returns the length (magnitude) of the vector.
+   * @return Length of the vector.
+   */
+  float
+    length() const;
 
-	
-	CVector2
-		operator/(float scalar) const {
+  /**
+   * @brief Dot product with another vector.
+   * @param other Vector to dot with.
+   * @return Dot product result.
+   */
+  float
+    dot(const CVector2& other) const;
 
-		return CVector2(m_x / scalar, m_y / scalar);
+  /**
+   * @brief Returns a normalized copy of the vector.
+   * @return Normalized vector.
+   */
+  CVector2
+    normalized() const;
 
-	}
+  /**
+   * @brief Normalizes the vector in-place.
+   */
+  void
+    normalize();
 
-	
-	CVector2&
+  /**
+   * @brief Calculates squared distance between two vectors.
+   * @param a First vector.
+   * @param b Second vector.
+   * @return Squared distance.
+   */
+  inline static float
+    distance(const CVector2& a, const CVector2& b);
 
-		operator+=(const CVector2& other) {
-		m_x += other.m_x;
-		m_y += other.m_y;
-		return *this;
-	}
+  /**
+   * @brief Linearly interpolates between two vectors.
+   * @param a Start vector.
+   * @param b End vector.
+   * @param t Interpolation factor (0.0 - 1.0).
+   * @return Interpolated vector.
+   */
+  inline static CVector2
+    lerp(const CVector2& a, const CVector2& b, float t);
 
-	
-	CVector2&
+  /**
+   * @brief Returns a vector initialized to zero.
+   * @return Vector (0,0).
+   */
+  inline static CVector2
+    zero();
 
-		operator-=(const CVector2& other) {
-		m_x -= other.m_x;
-		m_y -= other.m_y;
-		return *this;
-	}
+  /**
+   * @brief Returns a vector initialized to one.
+   * @return Vector (1,1).
+   */
+  inline static CVector2
+    one();
 
-	
-	CVector2&
-
-		operator*=(const CVector2& other) {
-		m_x *= other.m_x;
-		m_y *= other.m_y;
-		return *this;
-	}
-
-	
-	CVector2&
-
-		operator/=(const CVector2& other) {
-		m_x /= other.m_x;
-		m_y /= other.m_y;
-		return *this;
-	}
-
-	
-	bool
-		operator==(const CVector2& other) const {
-		return (m_x == other.m_x && m_y == other.m_y);
-	}
-
-	
-	bool
-		operator!=(const CVector2& other) const {
-		return (m_x != other.m_x || m_y != other.m_y);
-	}
-
-	
-	float&
-		operator[](int index) {
-		if (index == 0) return m_x;
-		else if (index == 1) return m_y;
-		else throw std::out_of_range("Index out of range for CVector2");
-	}
-
-	
-	float
-		length(const CVector2& other) const {
-		return std::sqrt((other.m_x * other.m_x) + (other.m_y * other.m_y));
-	}
-
-	
-	float
-		squaredLength(const CVector2& other) const {
-		return (other.m_x * other.m_x) + (other.m_y * other.m_y);
-	}
-
-	
-	float
-		dotProduct(const CVector2& a, const CVector2& b) const {
-		return (a.m_x * b.m_x) + (a.m_y * b.m_y);
-	}
-
-	
-	float
-		crossProduct(const CVector2& a, const CVector2& b) const {
-		return (a.m_x * b.m_y) - (a.m_y * b.m_x);
-	}
-
-	
-	CVector2
-		normalize(const CVector2& other) const {
-		return CVector2(other.m_x / other.length(other),
-			other.m_y / other.length(other));
-	}
-
-	
-	CVector2
-		normalize(CVector2& other) {
-		return CVector2(other.m_x / other.length(other),
-			other.m_y / other.length(other));
-	}
-
-	
-	static float
-		distance(const CVector2& a, const CVector2& b) {
-		return (b - a).length(b - a);
-	}
-
-	
-	static CVector2
-		lerp(const CVector2& a, const CVector2& b, float t) {
-		return a + (b - a) * t;
-	}
-
-	
-	static CVector2 Zero() {
-		return CVector2(0.0f, 0.0f);
-	}
-
-	
-	static CVector2 Unit() {
-		return CVector2(1.0f, 1.0f);
-	}
-
-private:
-	float m_x;
-	float m_y;
+  /**
+   * @brief Stream output operator for printing vector.
+   * @param os Output stream.
+   * @param v Vector to print.
+   * @return Reference to output stream.
+   */
+  friend std::ostream&
+    operator<<(std::ostream& os, const CVector2& v) {
+    os << "CVector2(" << v.x << ", " << v.y << ")";
+    return os;
+  }
 };

@@ -67,7 +67,7 @@ namespace EngineUtilities {
     }
 
     /**
-     * @brief Operador de asignación de movimiento.
+     * @brief Operador de asignaci?n de movimiento.
      *
      * Libera el objeto actual y transfiere la propiedad del puntero del otro
      * TUniquePtr al actual.
@@ -103,8 +103,14 @@ namespace EngineUtilities {
     TUniquePtr(const TUniquePtr<T>&) = delete;
     TUniquePtr<T>& operator=(const TUniquePtr<T>&) = delete;
 
+    template<typename U>
+    TUniquePtr(TUniquePtr<U>&& other) noexcept
+      : ptr(static_cast<T*>(other.release())) {
+    }
+
+
     /**
-     * @brief Operador de desreferenciación.
+     * @brief Operador de desreferenciaci?n.
      *
      * @return Referencia al objeto gestionado.
      */
@@ -165,7 +171,7 @@ namespace EngineUtilities {
   };
 
   /**
-   * @brief Función de utilidad para crear un TUniquePtr.
+   * @brief Funci?n de utilidad para crear un TUniquePtr.
    *
    * @tparam T Tipo del objeto gestionado.
    * @tparam Args Tipos de los argumentos del constructor del objeto gestionado.
@@ -177,6 +183,8 @@ namespace EngineUtilities {
   {
     return TUniquePtr<T>(new T(args...));
   }
+
+
 
   /*
   // Ejemplo de uso de TUniquePtr
@@ -193,7 +201,7 @@ namespace EngineUtilities {
       std::cout << "MyClass destructor: " << value << std::endl;
     }
 
-    
+
     void display() const
     {
       std::cout << "Value: " << value << std::endl;
@@ -220,7 +228,7 @@ namespace EngineUtilities {
       MyClass* rawPtr = up2.release();
       rawPtr->display();
       delete rawPtr; // Manualmente liberar la memoria ya que fue liberada del TUniquePtr
-    } // Aquí, up1 y up2 se destruyen y la memoria de MyClass se libera automáticamente si no fue liberada antes
+    } // Aqu?, up1 y up2 se destruyen y la memoria de MyClass se libera autom?ticamente si no fue liberada antes
 
     return 0;
   }

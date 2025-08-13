@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * MIT License
  *
  * Copyright (c) 2024 Roberto Charreton
@@ -29,20 +29,20 @@
 #pragma once
 namespace EngineUtilities {
   /**
- * @brief Clase TStaticPtr para manejo de un puntero estático.
+ * @brief Clase TStaticPtr para manejo de un puntero estï¿½tico.
  *
- * La clase TStaticPtr gestiona un único objeto estático y proporciona métodos
+ * La clase TStaticPtr gestiona un ï¿½nico objeto estï¿½tico y proporciona mï¿½todos
  * para acceder al objeto, verificar si el puntero es nulo y realizar operaciones
- * básicas de manejo de memoria.
+ * bï¿½sicas de manejo de memoria.
  */
   template<typename T>
   class TStaticPtr
   {
   public:
     /**
-     * @brief Inicializa el puntero estático al objeto.
+     * @brief Inicializa el puntero estï¿½tico al objeto.
      *
-     * Inicializa el puntero estático a nullptr.
+     * Inicializa el puntero estï¿½tico a nullptr.
      */
     TStaticPtr() = default;
 
@@ -63,7 +63,7 @@ namespace EngineUtilities {
     /**
      * @brief Destructor.
      *
-     * Libera la memoria del objeto gestionado si es la última instancia.
+     * Libera la memoria del objeto gestionado si es la ï¿½ltima instancia.
      */
     ~TStaticPtr()
     {
@@ -95,7 +95,7 @@ namespace EngineUtilities {
     }
 
     /**
-     * @brief Reiniciar el puntero estático con un nuevo objeto.
+     * @brief Reiniciar el puntero estï¿½tico con un nuevo objeto.
      *
      * Libera la memoria del objeto actual (si existe) y toma la propiedad de un nuevo puntero crudo.
      *
@@ -111,11 +111,11 @@ namespace EngineUtilities {
     }
 
   private:
-    static T* instance; ///< Puntero estático al objeto gestionado.
+    static T* instance; ///< Puntero estï¿½tico al objeto gestionado.
   };
 
   /*
-  // Inicializar el puntero estático
+  // Inicializar el puntero estï¿½tico
   template<typename T>
   T* TStaticPtr<T>::instance = nullptr;
 
