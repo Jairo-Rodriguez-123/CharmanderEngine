@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\ActorSerializer.cpp" />
     <ClCompile Include="src\BaseApp.cpp" />
     <ClCompile Include="src\CShape.cpp" />
     <ClCompile Include="src\ECS\Actor.cpp" />
@@ -34,8 +33,6 @@
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ActorPicker.h" />
-    <ClInclude Include="include\ActorSerializer.h" />
     <ClInclude Include="include\BaseApp.h" />
     <ClInclude Include="include\Circuit\Circuit1.h" />
     <ClInclude Include="include\Components\LapComponent.h" />

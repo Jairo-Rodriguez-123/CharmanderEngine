@@ -63,9 +63,6 @@
     <ClCompile Include="src\ResourceManager.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
-    <ClCompile Include="include\ActorSerializer.cpp">
-      <Filter>Archivos de encabezado</Filter>
-    </ClCompile>
     <ClCompile Include="src\EngineGUI.cpp">
       <Filter>Archivos de recursos</Filter>
     </ClCompile>
@@ -139,12 +136,6 @@
     </ClInclude>
     <ClInclude Include="include\ECS\A_Racer.h">
       <Filter>ECS</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ActorPicker.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ActorSerializer.h">
-      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="include\Systems\PlayerInputSystems.h">
       <Filter>Systems</Filter>

@@ -4,6 +4,12 @@
 #include "ECS/Transform.h"
 #include "Vectors/CVector2.h"
 
+#include <string>  // por si no viene de Prerequisites.h
+
+// Alias para que EngineMathLib::CVector2 sea tu CVector2 global
+namespace EngineMathLib { using CVector2 = ::CVector2; }
+
+
 /**
  * @enum PlayerControlMode
  * @brief Selects how the player is driven by the game logic.
