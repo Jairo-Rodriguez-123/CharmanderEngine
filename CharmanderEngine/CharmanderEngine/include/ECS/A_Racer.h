@@ -2,7 +2,7 @@
 #include "Prerequisites.h"
 #include "ECS/Actor.h"
 #include "ECS/Transform.h"
-#include "Vectors/CVector2.h"
+#include "CVector2.h"
 
 /**
  * @enum PlayerControlMode

@@ -4,84 +4,83 @@
 
 /**
  * @class Texture
- * @brief Component that owns an sf::Texture loaded from disk.
- *
- * @details
- * Loads "<name>.<ext>" into an internal sf::Texture. On failure, logs
- * a message to std::cout. Acts as a data holder; drawing is done elsewhere.
+ * @brief Represents a texture component in the ECS, responsible for loading and managing an SFML texture.
  */
 class
-  Texture : public Component {
-
+	Texture : public Component {
 public:
+	/**
+	* @brief Default constructor for Texture.
+	*/
+	Texture() = default;
 
-  /**
-   * @brief Default constructor; empty texture holder.
-   */
-  Texture() = default;
+	/**
+	* @brief Constructs a Texture with the specified name and extension.
+	* @param textureName The base name of the texture file (without extension).
+	* @param extension The file extension for the texture (default is "png").
+	*
+	* Loads the texture from file and prints an error message if loading fails.
+	*/
+	Texture(const std::string& textureName, const std::string& extension = "png")
+		: m_textureName(textureName), m_extension(extension), Component(TEXTURE) {
+		if (!m_texture.loadFromFile(m_textureName + "." + m_extension)) {
+			std::cout << "Error loading texture: " <<
+				m_textureName << "." << m_extension << std::endl;
+		}
+	}
 
-  /**
-   * @brief Construct and load texture from "<name>.<ext>".
-   * @param textureName File name without extension.
-   * @param extension   Image extension (default "png").
-   */
-  Texture(const std::string& textureName,
-    const std::string& extension = "png") :
-    m_textureName(textureName),
-    m_extension(extension),
-    Component(TEXTURE) {
-    if (!m_texture.loadFromFile(m_textureName + "." + m_extension)) {
-      std::cout << "Error loading texture: " << m_textureName
-        << "." << m_extension << std::endl;
-    }
-  }
+	/**
+	* @brief Virtual destructor for Texture.
+	*/
+	virtual
+		~Texture() = default;
 
-  /**
-   * @brief Virtual destructor.
-   */
-  virtual
-    ~Texture() = default;
+	/**
+	* @brief Starts the texture component. Called once when the component is initialized.
+	*/
+	void
+		start() override {};
 
-  /**
-   * @brief Initialization hook (unused here).
-   */
-  void
-    start() override {}
+	/**
+	* @brief Updates the texture component.
+	* @param deltaTime Time elapsed since last update.
+	*/
+	void
+		update(float deltaTime) override {};
 
-  /**
-   * @brief Per-frame update hook (unused here).
-   * @param deltaTime Seconds since last frame.
-   */
-  void
-    update(float deltaTime) override {}
+	/**
+	* @brief Renders the texture component.
+	* @param window Shared pointer to the Window where the component will be rendered.
+	*/
+	void
+		render(const EngineUtilities::TSharedPointer<Window>& window) override {};
 
-  /**
-   * @brief Render hook (unused; this component is data only).
-   * @param window Render window pointer.
-   */
-  void
-    render(const EngineUtilities::TSharedPointer<Window>& window) override {}
+	/**
+	* @brief Destroys the texture component and releases resources.
+	*/
+	void
+		destroy() override {};
 
-  /**
-   * @brief Destruction hook (unused here).
-   */
-  void
-    destroy() override {}
-
-  /**
-   * @brief Access the internal sf::Texture.
-   * @return Reference to the underlying texture.
-   */
-  sf::Texture&
-    getTexture() { return m_texture; }
+	/**
+	* @brief Gets the underlying SFML texture.
+	* @return Reference to the sf::Texture object.
+	*/
+	sf::Texture&
+		getTexture() {
+		return m_texture;
+	}
 
 private:
-  /** Texture resource loaded from file. */
-  sf::Texture m_texture;
-
-  /** Base file name without extension. */
-  std::string m_textureName;
-
-  /** File extension, e.g., "png" or "jpg". */
-  std::string m_extension;
+	/**
+	* @brief The SFML texture managed by this component.
+	*/
+	sf::Texture m_texture;
+	/**
+	* @brief The base name of the texture file (without extension).
+	*/
+	std::string m_textureName;
+	/**
+	* @brief The file extension for the texture.
+	*/
+	std::string m_extension;
 };

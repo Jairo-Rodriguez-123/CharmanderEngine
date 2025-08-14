@@ -1,19 +1,38 @@
 #include "ECS/Actor.h"
 
-// Constructor: sets name, creates default Shape and Transform components.
 Actor::Actor(const std::string& actorName) {
+  //Setup actor name
   m_name = actorName;
 
-  EngineUtilities::TSharedPointer<CShape> shape =
-    EngineUtilities::MakeShared<CShape>();
+  //Setup shape
+  EngineUtilities::TSharedPointer<CShape>
+    shape = EngineUtilities::MakeShared<CShape>();
   addComponent(shape);
 
-  EngineUtilities::TSharedPointer<Transform> transform =
-    EngineUtilities::MakeShared<Transform>();
+  //Setup transform
+  EngineUtilities::TSharedPointer<Transform>
+    transform = EngineUtilities::MakeShared<Transform>();
   addComponent(transform);
 }
 
-// Render: calls render() on all components.
+void
+Actor::start() {
+
+}
+
+void
+Actor::update(float deltaTime) {
+  auto transform = getComponent<Transform>();
+  auto shape = getComponent<CShape>();
+
+  if (transform && shape) {
+    // Update the position of the shape based on the transform
+    shape->setPosition(transform->getPosition());
+    shape->setRotation(transform->getRotation().x);
+    shape->setScale(transform->getScale());
+  }
+}
+
 void
 Actor::render(const EngineUtilities::TSharedPointer<Window>& window) {
   for (unsigned int i = 0; i < components.size(); i++) {
@@ -24,33 +43,41 @@ Actor::render(const EngineUtilities::TSharedPointer<Window>& window) {
   }
 }
 
-// Start: currently does nothing.
 void
-Actor::start() {}
+Actor::destroy() {
 
-// Update: syncs shape with transform.
+}
+
 void
+Actor::setTexture(const EngineUtilities::TSharedPointer<Texture>& texture) {
+  auto shape = getComponent<CShape>();
+  if (shape) {
+    if (!texture.isNull()) {
+      shape->setTexture(texture);
+      addComponent(texture);
+    }
+  }
+}
+
+/*void
 Actor::update(float deltaTime) {
   auto transform = getComponent<Transform>();
   auto shape = getComponent<CShape>();
 
-  if (transform && shape) {
+  if(transform && shape) {
+    // Update the position of the shape based on the transform
     shape->setPosition(transform->getPosition());
     shape->setRotation(transform->getRotation().x);
     shape->setScale(transform->getScale());
   }
 }
 
-// Destroy: currently does nothing.
 void
-Actor::destroy() {}
-
-// Set texture: assigns texture to the shape and adds it as a component.
-void
-Actor::setTexture(const EngineUtilities::TSharedPointer<Texture>& texture) {
-  auto shape = getComponent<CShape>();
-  if (shape && !texture.isNull()) {
-    shape->setTexture(texture);
-    addComponent(texture);
+Actor::render(const EngineUtilities::TSharedPointer<Window>& window) {
+  for (unsigned int i = 0; i < components.size(); i++) {
+    auto shape = components[i].dynamic_pointer_cast<CShape>();
+    if (shape) {
+      shape->render(window);
+    }
   }
-}
+}*/

@@ -31,17 +31,11 @@
     <Filter Include="Assets\Textures\Characters">
       <UniqueIdentifier>{f35b6397-a7c4-4df4-9457-99fd248cfc20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Systems">
-      <UniqueIdentifier>{f109d366-7f45-4c9d-bd4e-9cb913fdbf5b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Componentss">
       <UniqueIdentifier>{dc60f961-eec8-48a8-ad75-5823ac155966}</UniqueIdentifier>
     </Filter>
     <Filter Include="Circuit">
       <UniqueIdentifier>{1f362828-50f4-49f4-93d6-881031b1d584}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems\Systems.cpp">
-      <UniqueIdentifier>{d46c6f42-665e-4ecc-aa0d-b8556960d3ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,18 +62,6 @@
     </ClCompile>
     <ClCompile Include="src\ECS\A_Racer.cpp">
       <Filter>Archivos de recursos</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\PlayerInputSystem.cpp">
-      <Filter>Systems\Systems.cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\RaceSystem.cpp">
-      <Filter>Systems\Systems.cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\SteeringSystem.cpp">
-      <Filter>Systems\Systems.cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Systems\WaypointFollorSystem.cpp">
-      <Filter>Systems\Systems.cpp</Filter>
     </ClCompile>
     <ClCompile Include="src\Utilities\CVector2.cpp">
       <Filter>Archivos de recursos</Filter>
@@ -119,9 +101,6 @@
     <ClInclude Include="include\ECS\transform.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="include\Utilities\Cvector2.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="include\Window.h">
       <Filter>Archivos de origen</Filter>
     </ClInclude>
@@ -140,18 +119,6 @@
     <ClInclude Include="include\ECS\A_Racer.h">
       <Filter>ECS</Filter>
     </ClInclude>
-    <ClInclude Include="include\Systems\PlayerSystems.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Systems\RaceSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Systems\WaypointSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Systems\WaypointMaganer.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
     <ClInclude Include="include\Components\RaceCountdown.h">
       <Filter>Componentss</Filter>
     </ClInclude>
@@ -160,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="include\Circuit\Circuit1.h">
       <Filter>Circuit</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Utilities\Cvector2.h">
+      <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -26,10 +26,6 @@
     <ClCompile Include="src\EngineGUI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
-    <ClCompile Include="src\Systems\PlayerInputSystem.cpp" />
-    <ClCompile Include="src\Systems\RaceSystem.cpp" />
-    <ClCompile Include="src\Systems\SteeringSystem.cpp" />
-    <ClCompile Include="src\Systems\WaypointFollorSystem.cpp" />
     <ClCompile Include="src\Utilities\CVector2.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
@@ -53,10 +49,6 @@
     <ClInclude Include="include\Memory\TWeakPointer.h" />
     <ClInclude Include="include\Prerequisites.h" />
     <ClInclude Include="include\ResourceManager.h" />
-    <ClInclude Include="include\Systems\PlayerSystems.h" />
-    <ClInclude Include="include\Systems\RaceSystem.h" />
-    <ClInclude Include="include\Systems\WaypointSystem.h" />
-    <ClInclude Include="include\Systems\WaypointMaganer.h" />
     <ClInclude Include="include\Utilities\Cvector2.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>
